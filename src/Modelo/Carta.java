@@ -1,6 +1,8 @@
 package Modelo;
 
-public class Carta implements ICarta {
+import java.io.Serializable;
+
+public class Carta implements Serializable {
     private int numero;
     private String palo;
     private int valor_en_juego;//valor de las cartas a la hora de contar los puntos
@@ -13,22 +15,22 @@ public class Carta implements ICarta {
         this.orden = orden;
     }
 
-    @Override
+
     public int getNumero() {
         return numero;
     }
 
-    @Override
+
     public String getPalo() {
         return palo;
     }
 
-    @Override
+
     public int getOrden() {
         return orden;
     }
 
-    @Override
+
     public int getValor_en_juego() {
         return valor_en_juego;
     }

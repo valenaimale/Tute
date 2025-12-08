@@ -1,8 +1,7 @@
 package Controlador;
-import Modelo.IJuego;
-import Modelo.Partida;
+import Modelo.*;
 import Vista.VistaJuego;
-import Modelo.Juego;
+import Vista.VistaMano;
 import Vista.VistaPartida;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
@@ -11,7 +10,11 @@ import java.rmi.RemoteException;
 
 public class ControladorJuego implements IControladorRemoto {
     private IJuego juego;
+    private IPartida partida;
+    private IMano mano;
     private VistaJuego vistaJuego;
+    private VistaPartida vistaPartida;
+    private VistaMano vistaMano;
 
     public <T extends IObservableRemoto> ControladorJuego(T modelo, VistaJuego vistaJuego) {
         try{
@@ -30,38 +33,25 @@ notifyMessage("MOSTRA GANADOR Y PUNTAJES");//muestra los puntajes de cada uno y 
 notifyMessage("MOSTRA PUNTAJES");//muestra solo los puntajes parciales
 notifyMessage("INICIAR JUGADOR");
 */
-   /* @Override
-    public void update(Object obj) {
-        if(obj.equals("INICIAR JUGADOR")){
-            String nombre=vistaJuego.solicitar_nombre();
-            ((Juego)observable).crear_jugador(nombre);
+    public void iniciarjuego() throws RemoteException {
+        this.vistaJuego=new VistaJuego();
+        juego.iniciar_juego();
+    }
+    private void actualizar_partida_a_controlar(IPartida partida){
+        this.partida=partida;
+        if (vistaPartida==null){
+            this.vistaPartida=new VistaPartida();
         }
-        if(obj.equals("GANADOR POR TUTE")){
-            vistaJuego.mostrarMensaje(((Juego)observable).getGanador().getNombre() + " canto Tute, gano el juego");
+    }
+    private void actualizar_mano_a_controlar(IMano mano){
+        this.mano=mano;
+        if (vistaMano==null){
+            this.vistaMano=new VistaMano();
         }
-        if(obj.equals("MOSTRA GANADOR Y PUNTAJES")){
-            vistaJuego.mostrarMensaje("Puntajes finales: \n");
-            for(int i=0;i<((Juego)observable).getJugadores().size();i++){
-                vistaJuego.mostrarMensaje(((Juego)observable).getJugadores().get(i).getNombre()+" - "+((Juego)observable).getJugadores().get(i).getPuntaje());
-            }
-            vistaJuego.mostrarMensaje("El ganador es "+ ((Juego)observable).getGanador().getNombre());
-        }
-        if(obj.equals("MOSTRA PUNTAJES")){
-            vistaJuego.mostrarMensaje("Puntajes parciales: \n");
-            for(int i=0;i<((Juego)observable).getJugadores().size();i++){
-                vistaJuego.mostrarMensaje(((Juego)observable).getJugadores().get(i).getNombre()+" - "+((Juego)observable).getJugadores().get(i).getPuntaje());
-            }
-        }
-        if(obj.equals("CANTIDAD DE JUGADORES")){
-            int cantidad= vistaJuego.cantidad_jugadores();
-            ((Juego)observable).cantidad_jugadores(cantidad);
-        }
-        if(obj.equals("INICIAR OBSERVADOR PARTIDA")){
-            Partida partidaActual = ((Juego)observable).getPartidas().get(((Juego)observable).getPartidas().size()-1);
-            ControladorPartida controladorPartida = new ControladorPartida(partidaActual, new VistaPartida());
-        }
+    }
 
-    }*/
+
+
 
     @Override
     public <T extends IObservableRemoto> void setModeloRemoto(T juegoRemoto) throws RemoteException {
@@ -75,14 +65,14 @@ notifyMessage("INICIAR JUGADOR");
             if(obj.equals("INICIAR JUGADOR")){
                 System.out.println("hasta aca llegue 2");
                 String nombre=vistaJuego.solicitar_nombre();
-                ((Juego)juego).crear_jugador(nombre);//cambiar por juego?
+                juego.crear_jugador(nombre);//cambiar por juego?
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         try {
             if(obj.equals("GANADOR POR TUTE")){
-                vistaJuego.mostrarMensaje(((Juego)juego).getGanador().getNombre() + " canto Tute, gano el juego");
+                vistaJuego.mostrarMensaje(juego.getGanador().getNombre() + " canto Tute, gano el juego");
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -90,7 +80,7 @@ notifyMessage("INICIAR JUGADOR");
         try {
             if(obj.equals("MOSTRA GANADOR Y PUNTAJES")){
                 vistaJuego.mostrarMensaje("Puntajes finales: \n");
-                for(int i=0;i<((Juego)juego).getJugadores().size();i++){
+                for(int i=0;i<juego.getJugadores().size();i++){
                     vistaJuego.mostrarMensaje(((Juego)juego).getJugadores().get(i).getNombre()+" - "+((Juego)juego).getJugadores().get(i).getPuntaje());
                 }
                 vistaJuego.mostrarMensaje("El ganador es "+ ((Juego)juego).getGanador().getNombre());
@@ -101,8 +91,8 @@ notifyMessage("INICIAR JUGADOR");
         try {
             if(obj.equals("MOSTRA PUNTAJES")){
                 vistaJuego.mostrarMensaje("Puntajes parciales: \n");
-                for(int i=0;i<((Juego)juego).getJugadores().size();i++){
-                    vistaJuego.mostrarMensaje(((Juego)juego).getJugadores().get(i).getNombre()+" - "+((Juego)juego).getJugadores().get(i).getPuntaje());
+                for(int i=0;i<juego.getJugadores().size();i++){
+                    vistaJuego.mostrarMensaje(juego.getJugadores().get(i).getNombre()+" - "+juego.getJugadores().get(i).getPuntaje());
                 }
             }
         } catch (RemoteException e) {
@@ -111,17 +101,136 @@ notifyMessage("INICIAR JUGADOR");
         try {
             if(obj.equals("CANTIDAD DE JUGADORES")){
                 int cantidad= vistaJuego.cantidad_jugadores();
-                ((Juego)juego).cantidad_jugadores(cantidad);
+                juego.cantidad_jugadores(cantidad);
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         try {
-            if(obj.equals("INICIAR OBSERVADOR PARTIDA")){
-                Partida partidaActual = ((Juego)juego).getPartidas().get(((Juego)juego).getPartidas().size()-1);
-                ControladorPartida controladorPartida = new ControladorPartida(partidaActual, new VistaPartida());
+            if(obj.equals("ACTUALIZAR OBSERVADOR PARTIDA")){
+                IPartida partidaActual = juego.getPartidas().get(juego.getPartidas().size()-1);
+                actualizar_partida_a_controlar(partidaActual);
             }
         } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        //controlador partida:
+        //-------------------------------------------------------------------------------------------------------------------------------
+        try {
+            if(obj.equals("ANUNCIO PALO DEL TRIUNFO")){
+                System.out.println("hola 2");
+                vistaPartida.mostrarMensaje("El palo del triunfo es: \n"+partida.getPalo_triunfo());
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+            if(obj.equals("TUTE ")){
+                String desicion=vistaPartida.ofrecer_tute();
+                while(!desicion.equals("si") && !desicion.equals("no")){
+                    vistaPartida.mostrarMensaje("ingrese 'si' o 'no'");
+                    desicion=vistaPartida.ofrecer_tute();
+                }
+                partida.canto_tute(desicion);
+            }
+        } catch (RemoteException e){
+            e.printStackTrace();
+        }
+        try {
+            if(obj.equals("LAS 40")){
+                String desicion2=vistaPartida.ofrecer_cuarenta();
+                while(!desicion2.equals("si") && !desicion2.equals("no")){
+                    vistaPartida.mostrarMensaje("ingrese 'si' o 'no'");
+                    desicion2=vistaPartida.ofrecer_cuarenta();
+                }
+                partida.canto_cuarenta(desicion2);
+
+            }
+        }catch (RemoteException e){
+            e.printStackTrace();
+        }
+        try {
+            if(obj.equals("LAS 20")){
+                String desicion3=vistaPartida.ofrecer_veinte();
+                while(!desicion3.equals("si") && !desicion3.equals("no")){
+                    vistaPartida.mostrarMensaje("ingrese 'si' o 'no'");
+                    desicion3=vistaPartida.ofrecer_veinte();
+                }
+                partida.canto_veinte(desicion3);
+            }
+        } catch (RemoteException e){
+            e.printStackTrace();
+        }
+        try {
+            if(obj.equals("CANTO 40")){
+                vistaPartida.mostrarMensaje(partida.getGanador_parcial().getNombre() + " canto las 40");
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+            if(obj.equals("CANTO 20")){
+                vistaPartida.mostrarMensaje(partida.getGanador_parcial().getNombre() + " canto las 20");
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+            if(obj.equals("ULTIMAS 10")){
+                vistaPartida.mostrarMensaje(partida.getGanador_parcial().getNombre() + " se llevo la ultima baza 'ultimas 10', suma 10");
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+            if(obj.equals("ACTUALIZAR OBSERVADOR MANO")){
+                System.out.println("hola");
+                IMano manoActual = partida.getManos().get(partida.getManos().size()-1);
+                actualizar_mano_a_controlar(manoActual);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        // controlador mano:
+        // -----------------------------------------------------------------------------------------------------------------------------------
+        try {
+            if(obj.equals("SOLICITAR CARTA A JUGADOR ACTUAL")){
+                int i=vistaMano.pedirIngresoDeCarta();
+                while(i>=((Mano)mano).getActual().getMazo_jugador().size()){
+                    i=vistaMano.error_indice();
+                }
+                ((Mano)mano).tirarUnaCarta(i);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+            if(obj.equals("CARTA NO DISPONIBLE PARA TIRAR")){
+                vistaMano.mensaje_error_carta();
+                ((Mano)mano).pedirIndice();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+            if(obj.equals("MOSTRAME LAS CARTAS DEL JUGADOR HASTA AHORA")){
+                vistaMano.mostrarMensaje("Cartas en mano de " + ((Mano)mano).getActual().getNombre()+"\n");
+                for(int r=0;r<((Mano)mano).getActual().getMazo_jugador().size();r++){
+                    vistaMano.mostrarMensaje(r + " - "+((Mano)mano).getActual().getMazo_jugador().get(r).getNumero()+ " de "+ ((Mano)mano).getActual().getMazo_jugador().get(r).getPalo());
+                }
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+            if(obj.equals("MOSTRAME LAS CARTAS TIRADAS HASTA AHORA")){
+                vistaMano.mostrarMensaje("Cartas tiradas hasta ahora: \n");
+                for(int j=0;j<((Mano)mano).getCartas_jugadas_en_esta_mano().size();j++){
+                    vistaMano.mostrarMensaje(((Mano)mano).getCartas_jugadas_en_esta_mano().get(j).getNumero()+ " de "+ ((Mano)mano ).getCartas_jugadas_en_esta_mano().get(j).getPalo()+"\n");
+                }
+                vistaMano.mostrarMensaje("\n");
+            }
+        } catch (RemoteException e){
             e.printStackTrace();
         }
     }

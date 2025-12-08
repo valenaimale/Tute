@@ -2,14 +2,22 @@ package Modelo;
 
 import java.util.ArrayList;
 
-public class ReglaPartida implements IReglaPartida {
+public class ReglaPartida  {
+    private static ReglaPartida instancia;
     private  String palo_triunfo;
 
-    public ReglaPartida(String palo_triunfo) {
-        this.palo_triunfo = palo_triunfo;
+    private ReglaPartida() {
+    }
+    public static ReglaPartida getInstance(){
+        if (instancia==null){
+            instancia = new ReglaPartida();
+        }
+        return instancia;
     }
 
-    @Override
+    public void setPalo_triunfo(String palo_triunfo) {
+        this.palo_triunfo = palo_triunfo;
+    }
     public Boolean determinar_si_puede_cantar_tute(ArrayList<Carta> cartas_en_mano) {
         Boolean rta = false;
         int cantidad11 = 0;
@@ -36,7 +44,7 @@ public class ReglaPartida implements IReglaPartida {
         return rta;
     }
 
-    @Override
+
     public Boolean determinar_si_puede_cantar_las20(ArrayList<Carta> cartas_en_mano) {
         Boolean rta = false;
         /*for (int i = 0; i < cartas_en_mano.size(); i++) {
@@ -57,7 +65,7 @@ public class ReglaPartida implements IReglaPartida {
         return rta;
     }
 
-    @Override
+
     public Boolean determinar_si_puede_cantar_las40(ArrayList<Carta> cartas_en_mano) {
         Boolean rta = false;
         /*for (int i = 0; i < cartas_en_mano.size(); i++) {

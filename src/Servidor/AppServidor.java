@@ -1,6 +1,8 @@
 package Servidor;
 
+import Controlador.ControladorJuego;
 import Modelo.Juego;
+import Vista.VistaJuego;
 import ar.edu.unlu.rmimvc.RMIMVCException;
 import ar.edu.unlu.rmimvc.Util;
 import ar.edu.unlu.rmimvc.servidor.Servidor;
@@ -39,6 +41,5 @@ public class AppServidor {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 }

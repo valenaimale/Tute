@@ -14,8 +14,6 @@ public interface IJuego extends IObservableRemoto {
 
     void crear_jugador(String nombre) throws RemoteException;
 
-
-
     ArrayList<Jugador> getJugadores() throws RemoteException;
 
     ArrayList<Partida> getPartidas() throws RemoteException;

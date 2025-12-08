@@ -2,10 +2,11 @@ package Modelo;
 import Controlador.Observer;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class Partida extends ObservableRemoto implements IPartida {//cada vez que se reparte es una partida nueva, luego de cada mano se verifica si el ganador puede cantar algo
+public class Partida extends ObservableRemoto implements IPartida, Serializable {//cada vez que se reparte es una partida nueva, luego de cada mano se verifica si el ganador puede cantar algo
     private String palo_triunfo;
     private ReglaPartida reglas;
     private Crupier repartidor;
@@ -19,31 +20,22 @@ public class Partida extends ObservableRemoto implements IPartida {//cada vez qu
         this.flagTute=flagTute;
     }
 
-    /*public void attach (Observer anObserver){
-        observers.add(anObserver);
-    }
-    public void detach (Observer anObserver){
-        observers.remove(anObserver);
-    }
-
-    public void notifyMessage(Object obj){
-        for (Observer observer:observers){
-            observer.update(obj);
-        }
-    }*/
     @Override
     public void iniciar_partida(Juego juego1) throws RemoteException {
         repartidor=new Crupier(mazo1);
         manos=new ArrayList<>();
         repartidor.repartir(juego1.getJugadores());
         palo_triunfo=repartidor.Palo_triunfo(juego1.getJugadores());
-        reglas=new ReglaPartida(palo_triunfo);
+        reglas=ReglaPartida.getInstance();
+        reglas.setPalo_triunfo(palo_triunfo);
         int i=0;
+        System.out.println("hasta aca llegue 4");
         while(!repartidor.determinar_si_hay_cartas(juego1.getJugadores())==false) {
             ArrayList<Carta> cartas = new ArrayList<>();
             Mano mano = new Mano(cartas);
             manos.add(mano);//se van a ir agregando al final cada mano nueva
-            notificarObservadores("INICIAR CONTROLADOR MANO");//crea el controlador de cada mano
+            System.out.println("hasta aca llegue 3");
+            notificarObservadores("ACTUALIZAR OBSERVADOR MANO");//crea el controlador de cada mano
             notificarObservadores("ANUNCIO PALO DEL TRIUNFO");//al comienzo de cada mano se muestra el palo del triunfo de la partida
             mano.iniciar_mano(this, juego1.getJugadores(), i);
             verificador_ganador(mano);

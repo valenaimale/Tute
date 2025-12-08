@@ -1,4 +1,4 @@
-package Controlador;
+/*package Controlador;
 
 import Modelo.IMano;
 import Modelo.Mano;
@@ -21,15 +21,17 @@ public class ControlarMano implements IControladorRemoto {
         }
     }
 
-    /*
+    public ControlarMano() {
+    }
+    //
  notifyMessage("SOLICITAR CARTA A JUGADOR ACTUAL");//pedir indice en la vista y llamar al metodo tirarUnaCarta(int i) donde i es el
  indice ingresado
  notifyMessage("CARTA NO DISPONIBLE PARA TIRAR");//pedir indice en la vista de vuelta con un mensaje de error
   notifyMessage("MOSTRAME LAS CARTAS DEL JUGADOR HASTA AHORA");//el controlador llama a actual.getMazo_jugador()
  notifyMessage("MOSTRAME LAS CARTAS TIRADAS HASTA AHORA");//mostrar cartas_jugadas_en_esta_mano
- */
 
-   /* @Override
+
+   // @Override
     public void update(Object obj) {
         if(obj.equals("SOLICITAR CARTA A JUGADOR ACTUAL")){
             int i=vistaMano.pedirIngresoDeCarta();
@@ -55,7 +57,7 @@ public class ControlarMano implements IControladorRemoto {
             }
             vistaMano.mostrarMensaje("\n");
         }
-    }*/
+    }//
 
     @Override
     public <T extends IObservableRemoto> void setModeloRemoto(T t) throws RemoteException {
@@ -97,7 +99,7 @@ public class ControlarMano implements IControladorRemoto {
             if(obj.equals("MOSTRAME LAS CARTAS TIRADAS HASTA AHORA")){
                 vistaMano.mostrarMensaje("Cartas tiradas hasta ahora: \n");
                 for(int j=0;j<((Mano)mano).getCartas_jugadas_en_esta_mano().size();j++){
-                    vistaMano.mostrarMensaje(((Mano)mano).getCartas_jugadas_en_esta_mano().get(j).getNumero()+ " de "+ ((Mano)mano).getCartas_jugadas_en_esta_mano().get(j).getPalo()+"\n");
+                    vistaMano.mostrarMensaje(((Mano)mano).getCartas_jugadas_en_esta_mano().get(j).getNumero()+ " de "+ ((Mano)mano ).getCartas_jugadas_en_esta_mano().get(j).getPalo()+"\n");
                 }
                 vistaMano.mostrarMensaje("\n");
             }
@@ -105,4 +107,4 @@ public class ControlarMano implements IControladorRemoto {
             e.printStackTrace();
         }
     }
-}
+}*/

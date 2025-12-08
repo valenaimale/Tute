@@ -2,13 +2,13 @@ package Modelo;
 
 import java.util.ArrayList;
 
-public class Crupier implements ICrupier {
+public class Crupier  {
     private Mazo mazo1;
 
     public Crupier(Mazo mazo1) {
         this.mazo1 = mazo1;
     }
-    @Override
+
     public void repartir(ArrayList<Jugador> jugadores){
         mazo1.mezclate();
         int i=0;
@@ -19,7 +19,7 @@ public class Crupier implements ICrupier {
             i++;
         }
     }
-    @Override
+
     public String Palo_triunfo(ArrayList<Jugador> jugadores) {
         int i= jugadores.size();
         Jugador jugador= jugadores.get(i-1);
@@ -27,7 +27,7 @@ public class Crupier implements ICrupier {
         Carta carta_triunfo=jugador.getMazo_jugador().get(n-1);
         return carta_triunfo.getPalo();
     }
-    @Override
+
     public Boolean determinar_si_hay_cartas(ArrayList<Jugador> jugadores){
         Boolean hay_cartas=true;
         /*for(int i=0; i< jugadores.size();i++){

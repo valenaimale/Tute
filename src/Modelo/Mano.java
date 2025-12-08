@@ -3,11 +3,12 @@ package Modelo;
 import Controlador.Observer;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 
-public class Mano extends ObservableRemoto implements IMano {
+public class Mano extends ObservableRemoto implements IMano, Serializable {
     private ArrayList<Carta> cartas_jugadas_en_esta_mano;
     private ReglaMano reglas;
     private Jugador ganador;
@@ -29,7 +30,8 @@ public class Mano extends ObservableRemoto implements IMano {
     }
     @Override
     public void iniciar_mano(Partida partida, ArrayList<Jugador> jugadores, int i) throws RemoteException{
-        reglas=new ReglaMano(partida.getPalo_triunfo());
+        reglas=ReglaMano.getInstance();
+        reglas.setPalo_triunfo(partida.getPalo_triunfo());
         actual=jugadores.get(i);
         for(int j=0;j< jugadores.size();j++){// no se puede for each, ya que no se requiere recorrer la lista en orden
             pedirIndice();

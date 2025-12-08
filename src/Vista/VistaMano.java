@@ -2,7 +2,6 @@ package Vista;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import Controlador.ControlarMano;
 public class VistaMano extends Vista{
     public int pedirIngresoDeCarta(){
         mostrarMensaje("Ingrese el indice de la carta que desea tirar: \n");

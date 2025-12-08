@@ -2,10 +2,11 @@ package Modelo;
 import Controlador.Observer;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class Juego extends ObservableRemoto implements IJuego {//se setean los puntajes luego de cada partida
+public class Juego extends ObservableRemoto implements IJuego, Serializable {//se setean los puntajes luego de cada partida
     private ArrayList<Partida> partidas;
     private ArrayList<Jugador> jugadores;
     private ReglaJuego reglas;
@@ -14,31 +15,20 @@ public class Juego extends ObservableRemoto implements IJuego {//se setean los p
     public Juego(){
     }
 
-    /*public void attach (Observer anObserver){
-        observers.add(anObserver);
-    }
-    public void detach (Observer anObserver){
-        observers.remove(anObserver);
-    }
-    public void notifyMessage(Object obj) {
-        for (Observer observer : observers) {
-            observer.update(obj);
-        }
-    }*/
-
     @Override
     public void iniciar_juego() throws RemoteException {
         Mazo mazo1=new Mazo();
         jugadores=new ArrayList<>();
         partidas=new ArrayList<>();
-        reglas=new ReglaJuego(jugadores);
+        reglas=ReglaJuego.getInstance();
+        reglas.setJugadores(jugadores);
         Boolean flag_tute=false;
         System.out.println("hasta aca llegue");//(crear clase regla_juego)
         notificarObservadores("CANTIDAD DE JUGADORES");//pide ingresar la cantidad de jugadores
         while(reglas.determinar_si_hay_ganador()==false){
             Partida partida=new Partida(mazo1,flag_tute);
             partidas.add(partida);//se van a ir agregando al final cada partida nueva
-            notificarObservadores("INICIAR OBSERVADOR PARTIDA");//crea el controlador partida
+            notificarObservadores("ACTUALIZAR OBSERVADOR PARTIDA");//crea el controlador partida
             partida.iniciar_partida(this);
             if(partida.getFlagTute()==true){
                 ganador=partida.getGanador_parcial();
@@ -59,11 +49,6 @@ public class Juego extends ObservableRemoto implements IJuego {//se setean los p
     }
     @Override
     public void cargar_puntajes() throws RemoteException {
-        /*for(int i=0; i< jugadores.size();i++){
-            int puntaje=reglas.determinar_tantos(jugadores.get(i).getBazasGanadas());
-            jugadores.get(i).incrementar_puntaje(puntaje);
-            jugadores.get(i).getBazasGanadas().clear();
-        }*/
         for(Jugador jugador:jugadores){
             int puntaje=reglas.determinar_tantos(jugador.getBazasGanadas());
             jugador.incrementar_puntaje(puntaje);

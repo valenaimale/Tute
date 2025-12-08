@@ -1,11 +1,12 @@
 package Modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Mazo implements IMazo {
+public class Mazo implements Serializable {
     private ArrayList<Carta> mazo;
 
     public Mazo() {
@@ -48,15 +49,15 @@ public class Mazo implements IMazo {
             }
         }
     }
-    @Override
+
     public void setMazo(Carta carta){
         this.mazo.add(carta);
     }
-    @Override
+
     public void mezclate(){
         Collections.shuffle(mazo);
     }
-    @Override
+
     public ArrayList<Carta> getMazo() {
         return mazo;
     }

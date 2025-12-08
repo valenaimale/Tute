@@ -2,13 +2,21 @@ package Modelo;
 
 import java.util.ArrayList;
 
-public class ReglaJuego implements IReglaJuego {
+public class ReglaJuego {
+    private static ReglaJuego instancia;
     private ArrayList<Jugador> jugadores;
 
-    public ReglaJuego(ArrayList<Jugador> jugadores) {
+    private ReglaJuego() {
+    }
+    public static ReglaJuego getInstance(){
+        if (instancia==null){
+            instancia = new ReglaJuego();
+        }
+        return instancia;
+    }
+    public void setJugadores(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
     }
-    @Override
     public int determinar_tantos(ArrayList<Carta> bazasGanadasXJug){
         int suma=0;
         /*for(int i=0;i<bazasGanadasXJug.size();i++){
@@ -19,7 +27,7 @@ public class ReglaJuego implements IReglaJuego {
         }
         return suma;
     }
-    @Override
+
     public Boolean determinar_si_hay_ganador(){
         Boolean rta=false;
         int puntajeGanador=0;
@@ -41,7 +49,7 @@ public class ReglaJuego implements IReglaJuego {
         }
         return rta;
     }
-    @Override
+
     public Jugador determinar_quien_gano(){
         Jugador ganador=jugadores.get(0);
         /*for(int i=0;i<jugadores.size();i++){
