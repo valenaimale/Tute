@@ -22,14 +22,6 @@ public class ReglaPartida  {
         Boolean rta = false;
         int cantidad11 = 0;
         int cantidad12 = 0;
-        /*for (int i = 0; i < cartas_en_mano.size(); i++) {
-            if (cartas_en_mano.get(i).getNumero() == 12) {
-                cantidad12++;
-            }
-            if (cartas_en_mano.get(i).getNumero() == 11) {
-                cantidad11++;
-            }
-        }*/
         for (Carta carta:cartas_en_mano){
             if (carta.getNumero() == 12) {
                 cantidad12++;

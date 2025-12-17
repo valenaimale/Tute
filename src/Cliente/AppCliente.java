@@ -2,8 +2,12 @@ package Cliente;
 
 import Controlador.ControladorJuego;
 
-import Modelo.Juego;
+import Controlador.ControladorPartida;
+import Controlador.ControladorPrincipal;
+import Controlador.ControlarMano;
 import Vista.VistaJuego;
+import Vista.VistaMano;
+import Vista.VistaPartida;
 import ar.edu.unlu.rmimvc.RMIMVCException;
 import ar.edu.unlu.rmimvc.Util;
 import ar.edu.unlu.rmimvc.cliente.Cliente;
@@ -48,12 +52,16 @@ public class AppCliente {
                 8888
         );
         VistaJuego vistaJuego = new VistaJuego();
-        ControladorJuego controladorJuego = new ControladorJuego();
-
+        VistaPartida vistaPartida = new VistaPartida();
+        VistaMano vistaMano = new VistaMano();
+        ControladorJuego controladorJuego = new ControladorJuego(vistaJuego);
+        ControladorPartida controladorPartida = new ControladorPartida(vistaPartida);
+        ControlarMano controlarMano = new ControlarMano(vistaMano);
+        ControladorPrincipal controladorPrincipal=new ControladorPrincipal(controladorJuego,controladorPartida,controlarMano);
         Cliente c = new Cliente(ip, Integer.parseInt(port), ipServidor, Integer.parseInt(portServidor));
         try {
-            c.iniciar(controladorJuego);
-            controladorJuego.iniciarjuego();
+            c.iniciar(controladorPrincipal);
+            controladorPrincipal.iniciarjuego();
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

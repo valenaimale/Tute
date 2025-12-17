@@ -1,8 +1,6 @@
 package Servidor;
 
-import Controlador.ControladorJuego;
-import Modelo.Juego;
-import Vista.VistaJuego;
+import Modelo.Administrador;
 import ar.edu.unlu.rmimvc.RMIMVCException;
 import ar.edu.unlu.rmimvc.Util;
 import ar.edu.unlu.rmimvc.servidor.Servidor;
@@ -30,8 +28,9 @@ public class AppServidor {
                 null,
                 8888
         );
-        Juego modelo = new Juego();
+
         Servidor servidor = new Servidor(ip, Integer.parseInt(port));
+        Administrador modelo = new Administrador();
         try {
             servidor.iniciar(modelo);
         } catch (RemoteException e) {
