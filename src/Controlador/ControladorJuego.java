@@ -1,9 +1,6 @@
 package Controlador;
 import Modelo.IAdministrador;
 import Vista.VistaJuego;
-import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
-import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
-
 import java.rmi.RemoteException;
 
 public class ControladorJuego  {

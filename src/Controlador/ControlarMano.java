@@ -1,10 +1,6 @@
 package Controlador;
-
 import Modelo.IAdministrador;
 import Vista.VistaMano;
-import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
-import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
-
 import java.rmi.RemoteException;
 
 public class ControlarMano {
@@ -25,10 +21,6 @@ public class ControlarMano {
   notifyMessage("MOSTRAME LAS CARTAS DEL JUGADOR HASTA AHORA");//el controlador llama a actual.getMazo_jugador()
  notifyMessage("MOSTRAME LAS CARTAS TIRADAS HASTA AHORA");//mostrar cartas_jugadas_en_esta_mano
 */
-
-
-
-
     public void update_mano(Object obj) throws RemoteException {
         try {
             if(obj.equals("SOLICITAR CARTA A JUGADOR ACTUAL")){

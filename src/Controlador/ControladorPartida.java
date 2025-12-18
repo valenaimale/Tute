@@ -2,8 +2,6 @@ package Controlador;
 
 import Modelo.IAdministrador;
 import Vista.VistaPartida;
-import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
-import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
 import java.rmi.RemoteException;
 
